@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">AppLayout</string>
+
+    <string name="tvNome">Nome: </string>
+    <string name="tvFone">Telefone: </string>
+    <string name="etNome">Digite seu Nome...</string>
+    <string name="etFone">Digite seu Telefone...</string>
+
+</resources>
