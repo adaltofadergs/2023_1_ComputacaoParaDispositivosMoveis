@@ -20,6 +20,11 @@ public class Conexao extends SQLiteOpenHelper {
                 " id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ," +
                 " nome TEXT NOT NULL ," +
                 " ra TEXT  ) " );
+
+        db.execSQL("CREATE TABLE disciplinas ( " +
+                " id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ," +
+                " nome TEXT NOT NULL ," +
+                " nota DOUBLE  ) " );
     }
 
     @Override
