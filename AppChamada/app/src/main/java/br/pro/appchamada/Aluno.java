@@ -1,5 +1,7 @@
 package br.pro.appchamada;
 
+import androidx.annotation.NonNull;
+
 public class Aluno {
 
     private int id;
@@ -15,6 +17,12 @@ public class Aluno {
         this.ra = ra;
     }
 
+
+    @NonNull
+    @Override
+    public String toString() {
+        return nome + " - RA: " + ra;
+    }
 
     public int getId() {
         return id;

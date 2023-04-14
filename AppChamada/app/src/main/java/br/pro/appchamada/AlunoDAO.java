@@ -49,7 +49,7 @@ public class AlunoDAO {
         SQLiteDatabase db = conn.getReadableDatabase();
         List<Aluno> lista = new ArrayList<>();
 
-        Cursor cursor = db.rawQuery("SELECT id, nome, ra FROM alunos",
+        Cursor cursor = db.rawQuery("SELECT id, nome, ra FROM alunos ORDER BY nome",
                 null);
         if( cursor != null && cursor.getCount() > 0 ){
             cursor.moveToFirst();
