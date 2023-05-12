@@ -19,7 +19,9 @@ public class MainActivity extends AppCompatActivity {
     private Button btnAdicionar;
     private ListView lvAlunos;
     private List<Aluno> listAlunos;
-    private ArrayAdapter adapter;
+
+    //private ArrayAdapter adapter;
+    private AdapterAluno adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +60,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void carregarAlunos(){
         listAlunos = AlunoDAO.getAlunos(this);
-
         if( listAlunos.isEmpty() ){
             lvAlunos.setEnabled(false);
-            String[] listaVazia = {"Lista Vazia!"};
-            adapter = new  ArrayAdapter(this, android.R.layout.simple_list_item_1, listaVazia);
+            //String[] listaVazia = {"Lista Vazia!"};
+            //adapter = new  ArrayAdapter(this, android.R.layout.simple_list_item_1, listaVazia);
+            Aluno fake = new Aluno(0, "Lista Vazia", "");
+            listAlunos.add( fake );
+            adapter = new AdapterAluno(this, listAlunos);
         }else {
             lvAlunos.setEnabled(true);
-            adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listAlunos);
+            //adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listAlunos);
+            adapter = new AdapterAluno(this, listAlunos);
         }
         lvAlunos.setAdapter( adapter );
     }
