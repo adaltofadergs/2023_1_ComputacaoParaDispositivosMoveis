@@ -3,6 +3,7 @@ package br.pro.appchamada;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,9 @@ public class FormularioActivity extends AppCompatActivity {
     private EditText etNome, etRA;
     private Button btnSalvar;
     private Aluno aluno;
+    private String acao;
+    private static final String INSERIR = "inserir";
+    private static final String EDITAR = "editar";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +34,22 @@ public class FormularioActivity extends AppCompatActivity {
             }
         });
 
+        acao = getIntent().getExtras().getString("acao");
+        if( acao.equals( EDITAR ) ){
+            carregarFormulario();
+        }
+
+    } // fim do onCreate()
+
+
+    private void carregarFormulario(){
+        int idAluno = (int) getIntent().getLongExtra("idAluno", 0);
+        Log.i("erroId", "Id: "+ idAluno);
+        aluno = AlunoDAO.getAlunoById(this, idAluno );
+        etNome.setText( aluno.getNome() );
+        etRA.setText( aluno.getRa() );
     }
+
 
     private void salvar(){
 
@@ -41,13 +60,22 @@ public class FormularioActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG
                     ).show();
         }else {
-            aluno = new Aluno();
+            if ( acao.equals( INSERIR ) ) {
+                aluno = new Aluno();
+            }
+
             aluno.setNome( nome );
             aluno.setRa( etRA.getText().toString() );
-            AlunoDAO.inserir(this, aluno);
-            etNome.setText( "" );
-            etRA.setText( "" );
-            aluno = null;
+
+            if( acao.equals(EDITAR)){
+                AlunoDAO.editar(this, aluno);
+                finish();
+            }else {
+                AlunoDAO.inserir(this, aluno);
+                etNome.setText( "" );
+                etRA.setText( "" );
+                aluno = null;
+            }
         }
     }
 

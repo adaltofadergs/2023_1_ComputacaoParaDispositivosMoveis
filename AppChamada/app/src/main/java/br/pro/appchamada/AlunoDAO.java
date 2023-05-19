@@ -5,6 +5,7 @@ import android.content.Context;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,16 +66,20 @@ public class AlunoDAO {
     }
 
     public static Aluno getAlunoById(Context context, int idAluno){
-        SQLiteDatabase db = new Conexao(context).getReadableDatabase();
+        Conexao conn = new Conexao(context);
+        SQLiteDatabase db = conn.getReadableDatabase();
         Aluno aluno = null;
-        Cursor cursor = db.rawQuery("SELECT id, nome, ra FROM alunos " +
-                " WHERE id = " + idAluno, null);
+        String sql = "SELECT id, nome, ra FROM alunos " +
+                " WHERE id = " + idAluno;
+        Cursor cursor = db.rawQuery( sql, null);
         if( cursor != null && cursor.getCount() > 0 ){
             cursor.moveToFirst();
-                aluno = new Aluno();
-                aluno.setId( cursor.getInt( 0 )  );
-                aluno.setNome( cursor.getString( 1 )  );
-                aluno.setRa( cursor.getString( 2 )  );
+
+            aluno = new Aluno();
+            aluno.setId( cursor.getInt( 0 )  );
+            aluno.setNome( cursor.getString( 1 )  );
+            aluno.setRa( cursor.getString( 2 )  );
+
         }
         return aluno;
     }

@@ -1,15 +1,23 @@
 package br.pro.appchamada;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.List;
@@ -46,6 +54,19 @@ public class MainActivity extends AppCompatActivity {
                         FormularioActivity.class);
                 i.putExtra("acao", "inserir" );
                 startActivity( i );
+            }
+        });
+
+        lvAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, FormularioActivity.class);
+                intent.putExtra("acao", "editar");
+            //    int idAluno = listAlunos.get( position ).getId();
+                Log.i("erroId", "Id antes: " + id);
+                intent.putExtra("idAluno", id);
+                startActivity( intent );
+
             }
         });
 
@@ -95,7 +116,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add("Ligar...");
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
+        if( item.toString().equals("Ligar...") ){
+            AlertDialog.Builder alerta = new AlertDialog.Builder(this);
+            alerta.setTitle("Ligar");
+
+            EditText etFone = new EditText(this);
+            etFone.setHint("Digite o telefone:");
+            etFone.setTextColor(Color.BLUE);
+            etFone.setInputType( InputType.TYPE_CLASS_PHONE );
+
+            alerta.setView( etFone );
+
+            alerta.setNeutralButton("Ligar Direto", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Uri uri = Uri.parse("tel: " + etFone.getText().toString());
+                    Intent intent = new Intent(Intent.ACTION_CALL, uri );
+                    startActivity( intent );
+                }
+            });
+
+            alerta.setPositiveButton("Discagem", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Uri uri = Uri.parse("tel: " + etFone.getText().toString());
+                    Intent intent = new Intent(Intent.ACTION_DIAL, uri );
+                    startActivity( intent );
+                }
+            });
+            alerta.show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
 
 
